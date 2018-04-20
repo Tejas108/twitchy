@@ -1,7 +1,10 @@
 import React from 'react';
 
 const List = (props) => {
-  const items = props.data.map(item =>
+
+  let list = props.data;
+  props.filter === 'active' ? list = list.filter((items) => items.status !== null) : list = props.data;
+  const items = list.map(item =>
     <li key={item._id}>
     <a href={item.url}>
       <img src={item.logo} height="50" width="50" alt="logo"/>
