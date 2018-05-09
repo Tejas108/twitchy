@@ -11,30 +11,33 @@ export default class App extends Component {
     }
   }
 
-  handleLoadData = channel => {
-     this.setState({ online: 'all' });
+  handleLoadData = (channel) => {
+    this.setState({ online: 'all' });
     const api_url = "https://wind-bow.glitch.me/twitch-api/channels/";
     fetch(api_url + channel)
       .then(response => response.json())
       .then(data => {
         let channels = this.state.data.concat(data);
-        this.setState({ data: channels });
+        this.setState({
+          data: channels
+        });
       })
   }
 
   handleShowOnline = () => {
     this.setState({ online: 'active' });
-    console.log("handleShowOnline");
-    console.log(this.state.online);
+  }
+
+  handleShowOffline = () => {
+    this.setState({ online: 'inactive' });
   }
 
   handleInitialLoad = () => {
-    this.setState(
-      {
-        data: [],
-        online: 'all'
-      });
-    let channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
+    this.setState({
+      data: [],
+      online: 'all'
+    });
+    const channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
     for (let i = 0; i < channels.length; i++) {
       this.handleLoadData(channels[i]);
     }
@@ -47,8 +50,15 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header showAll={this.handleInitialLoad} showOnline={this.handleShowOnline}/>
-        <List data={this.state.data} filter={this.state.online}/>
+        <Header
+          showAll={this.handleInitialLoad}
+          showOnline={this.handleShowOnline}
+          showOffline={this.handleShowOffline}
+        />
+        <List
+          data={this.state.data}
+          filter={this.state.online}
+        />
       </div>
     )
   }
